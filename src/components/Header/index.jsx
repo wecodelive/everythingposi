@@ -18,7 +18,7 @@ export default function Header() {
   const [showCart, setShowCart] = React.useState(false);
   const [cartItemCount, setCartItemCount] = React.useState(0);
   const [navToShow, setNavToShow] = React.useState("");
-  const [isHomePage, setIsHomePage] = React.useState(false);
+  const [isHomePage, setIsHomePage] = React.useState(true);
 
   const {
     currency,
