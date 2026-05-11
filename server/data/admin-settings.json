@@ -1,0 +1,13 @@
+{
+  "storeName": "Everythingpossy",
+  "storeEmail": "admin@everythingposy.com",
+  "storePhone": "+234 916 709 6611",
+  "currency": "NGN",
+  "taxRate": "7.5",
+  "notificationsEnabled": true,
+  "exchangeRates": {
+    "USD": 1500,
+    "GBP": 1900,
+    "EUR": 1700
+  }
+}
