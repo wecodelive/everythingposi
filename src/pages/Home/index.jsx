@@ -12,6 +12,7 @@ import { notifyError, notifySuccess } from "../../utils/notify";
 import { useCurrency } from "../../context/CurrencyContext";
 import ProductFrameV2 from "../../components/ProductFrameV2";
 import { mockProducts } from "../../utils/mockProducts";
+import { preloadProductImages } from "../../utils/mediaPreloadConfig";
 import { div } from "framer-motion/client";
 
 export default function Index() {
@@ -23,6 +24,7 @@ export default function Index() {
   const [categories, setCategories] = useState([]);
   const [activePromo, setActivePromo] = useState(null);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
 
   const featuredProducts = useMemo(
     () => homeProducts.slice(0, 8),
@@ -143,6 +145,29 @@ export default function Index() {
     fetchHomeData();
   }, []);
 
+  // Preload product images when they're available
+  useEffect(() => {
+    if (homeProducts.length > 0) {
+      const productImages = homeProducts
+        .slice(0, 8)
+        .flatMap((product) => product.images || [])
+        .filter(Boolean);
+
+      if (productImages.length > 0) {
+        preloadProductImages(productImages);
+      }
+    }
+
+    // Also preload mockProducts images
+    const mockImages = mockProducts
+      .flatMap((product) => product.images || [])
+      .filter(Boolean);
+
+    if (mockImages.length > 0) {
+      preloadProductImages(mockImages);
+    }
+  }, [homeProducts]);
+
   // Featured product (first product with image)
   const heroProduct = useMemo(
     () => homeProducts.find((p) => p.images?.[0]) || homeProducts[0],
@@ -153,12 +178,26 @@ export default function Index() {
     <>
       {/* Hero Section */}
       <div className="relative w-full h-screen bg-neutral-100 overflow-hidden">
+        {/* Poster Image (shows while video loads) */}
+        <img
+          src="/preBgVid.png"
+          alt="Background"
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
+            videoLoaded ? "opacity-0" : "opacity-100"
+          }`}
+        />
+
+        {/* Video */}
         <video
           autoPlay
           loop
           muted
           playsInline
-          className="absolute min-w-full min-h-full w-auto h-auto object-cover"
+          poster="/preBgVid.png"
+          onLoadedData={() => setVideoLoaded(true)}
+          onCanPlay={() => setVideoLoaded(true)}
+          preload="auto"
+          className="absolute inset-0 min-w-full min-h-full w-auto h-auto object-cover"
         >
           <source src="/bg-vid.mp4" type="video/mp4" />
         </video>

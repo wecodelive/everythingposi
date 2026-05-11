@@ -109,8 +109,13 @@ exports.getProducts = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, message: "Internal server error" });
+    console.error("Products Error:", error?.message || error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch products",
+      error:
+        process.env.NODE_ENV === "development" ? error?.message : undefined,
+    });
   }
 };
 

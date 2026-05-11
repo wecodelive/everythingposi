@@ -4,8 +4,7 @@ import { UserRound } from "lucide-react";
 import { Menu } from "lucide-react";
 import Modal from "../Modals/Modal";
 import SideNav from "./SideNav";
-import { useNavigate } from "react-router";
-// import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router";
 import Cart from "./Cart";
 import { APP_CART_UPDATED_EVENT, getCartSummary } from "../../utils/cart";
 import { useCurrency } from "../../context/CurrencyContext";
@@ -13,12 +12,14 @@ import { motion, AnimatePresence } from "framer-motion";
 
 export default function Header() {
   const navigate = useNavigate();
-  // const location = useLocation();
+  const location = useLocation();
   const [showModal, setShowModal] = React.useState(false);
   const [showCart, setShowCart] = React.useState(false);
   const [cartItemCount, setCartItemCount] = React.useState(0);
   const [navToShow, setNavToShow] = React.useState("");
-  const [isHomePage, setIsHomePage] = React.useState(true);
+
+  // Detect if we're on the home page
+  const isHomePage = location.pathname === "/" || location.pathname === "/home";
 
   const {
     currency,
@@ -178,20 +179,6 @@ export default function Header() {
     return () => {
       window.removeEventListener(APP_CART_UPDATED_EVENT, syncCartCount);
     };
-  }, []);
-
-  React.useEffect(() => {
-    const path = window.location.pathname;
-    if (
-      path === "/" ||
-      path === "/home" ||
-      path === "/everythingposi.vercel.app" ||
-      path === "/everythingposi.vercel.app/home"
-    ) {
-      setIsHomePage(true);
-    } else {
-      setIsHomePage(false);
-    }
   }, []);
 
   const toggleModal = () => {
