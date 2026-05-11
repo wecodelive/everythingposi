@@ -160,7 +160,7 @@ export default function Index() {
           playsInline
           className="absolute min-w-full min-h-full w-auto h-auto object-cover"
         >
-          <source src="/public/bg-vid.mp4" type="video/mp4" />
+          <source src="/bg-vid.mp4" type="video/mp4" />
         </video>
 
         {/* Hero Content */}
