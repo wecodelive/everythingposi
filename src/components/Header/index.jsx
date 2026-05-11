@@ -18,10 +18,7 @@ export default function Header() {
   const [showCart, setShowCart] = React.useState(false);
   const [cartItemCount, setCartItemCount] = React.useState(0);
   const [navToShow, setNavToShow] = React.useState("");
-  const [isHomePage, setIsHomePage] = React.useState(() => {
-    const path = window.location.pathname;
-    return path === "/" || path === "/home";
-  });
+  const [isHomePage, setIsHomePage] = React.useState(false);
 
   const {
     currency,
@@ -181,6 +178,20 @@ export default function Header() {
     return () => {
       window.removeEventListener(APP_CART_UPDATED_EVENT, syncCartCount);
     };
+  }, []);
+
+  React.useEffect(() => {
+    const path = window.location.pathname;
+    if (
+      path === "/" ||
+      path === "/home" ||
+      path === "/everythingposi.vercel.app" ||
+      path === "/everythingposi.vercel.app/home"
+    ) {
+      setIsHomePage(true);
+    } else {
+      setIsHomePage(false);
+    }
   }, []);
 
   const toggleModal = () => {
